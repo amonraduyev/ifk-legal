@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Impossible Freekick – Challenge</title>
+<meta name="description" content="A friend challenged you on Impossible Freekick. Can you beat their free-kick?">
+<meta property="og:type" content="website">
+<meta property="og:title" content="⚽ You've been challenged on Impossible Freekick!">
+<meta property="og:description" content="Can you beat your friend's free-kick? Tap to accept the duel.">
+<meta property="og:image" content="https://amonraduyev.github.io/ifk-legal/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#140f33">
+<style>
+  :root{--bg:#120d2e;--card:#1d1650;--ink:#fff;--mute:#b9b4dd;--pink:#ff2d8b;--gold:#ffcb32;--blue:#2d7bff}
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:radial-gradient(120% 80% at 50% 0%,#2a1c74 0%,var(--bg) 60%) fixed;color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  main{max-width:520px;margin:0 auto;padding:28px 16px 40px;text-align:center}
+  .logo{font-weight:900;font-style:italic;font-size:30px;letter-spacing:.5px;margin:6px 0 18px}
+  .logo span{color:var(--gold)}
+  .card{background:var(--card);border:2px solid rgba(255,255,255,.12);border-radius:22px;padding:26px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+  .tag{display:inline-block;background:var(--pink);color:#fff;font-weight:900;font-style:italic;border-radius:999px;padding:6px 16px;letter-spacing:.5px}
+  h1{font-size:28px;line-height:1.2;margin:16px 0 6px;font-style:italic;font-weight:900}
+  p{color:var(--mute);margin:0 0 18px}
+  .btn{display:block;width:100%;border:0;border-radius:16px;padding:18px 16px;font-size:20px;font-weight:900;font-style:italic;color:#fff;text-decoration:none;margin:10px 0;cursor:pointer}
+  .play{background:linear-gradient(180deg,#ff4f9e,#d81b6a);box-shadow:0 6px 0 #8f0f45}
+  .store{background:linear-gradient(180deg,#3b8bff,#1d5fd6);box-shadow:0 6px 0 #0f3a8a}
+  .small{font-size:13px;color:var(--mute);margin-top:18px}
+  .small a{color:var(--mute)}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+  <div class="logo">IMPOSSIBLE <span>FREEKICK</span></div>
+  <div class="card">
+    <span class="tag" id="tag">CHALLENGE!</span>
+    <h1 id="title">A friend challenged you!</h1>
+    <p id="sub">Can you beat their free-kick? Same level, same rules, three attempts.</p>
+    <a class="btn play" id="open" href="#">OPEN IN THE GAME</a>
+    <a class="btn store" id="store" href="#">GET IT ON GOOGLE PLAY</a>
+    <p class="small hidden" id="ios">The iPhone version is coming soon.</p>
+    <p class="small" id="hint">Don't have the game yet? Install it — your challenge opens right after.</p>
+  </div>
+  <p class="small"><a href="../privacy.html">Privacy</a> · <a href="../index.html">Impossible Freekick</a></p>
+</main>
+<script>
+(function () {
+  var PKG = 'com.GoToTheMoon.ImpossibleFreekick';
+  var APPSTORE = null; // the App Store page, once the iOS version is out
+  var q = new URLSearchParams(location.search);
+  var id = (q.get('i') || '').replace(/[^0-9A-Za-z]/g, '').slice(0, 12);
+  var code = q.get('c') || '';
+  var query = id ? 'i=' + encodeURIComponent(id) : (code ? 'c=' + encodeURIComponent(code) : '');
+  var play = 'https://play.google.com/store/apps/details?id=' + PKG + (query ? '&referrer=' + encodeURIComponent(query) : '');
+  var ua = navigator.userAgent || '';
+  var android = /Android/i.test(ua), ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var tr = (navigator.language || '').toLowerCase().indexOf('tr') === 0;
+  var T = tr ? {
+    tag: 'MEYDAN OKUMA!', title: 'Bir arkadaşın sana meydan okudu!', sub: 'Onun frikiğini geçebilir misin? Aynı bölüm, aynı kurallar, üç deneme.',
+    invTag: 'HADİ OYNAYALIM!', invTitle: 'Impossible Freekick\'e davetlisin!', invSub: 'Arkadaşınla düello yap, imkânsız frikikleri birlikte at.',
+    open: 'OYUNDA AÇ', store: 'GOOGLE PLAY\'DEN İNDİR', ios: 'iPhone sürümü çok yakında.', hint: 'Oyun yüklü değil mi? İndir — meydan okuman hemen ardından açılır.'
+  } : {
+    tag: 'CHALLENGE!', title: 'A friend challenged you!', sub: 'Can you beat their free-kick? Same level, same rules, three attempts.',
+    invTag: 'LET\'S PLAY!', invTitle: 'You\'re invited to Impossible Freekick!', invSub: 'Duel your friends and score the impossible free-kicks together.',
+    open: 'OPEN IN THE GAME', store: 'GET IT ON GOOGLE PLAY', ios: 'The iPhone version is coming soon.', hint: 'Don\'t have the game yet? Install it — your challenge opens right after.'
+  };
+  var $ = function (x) { return document.getElementById(x); };
+  if (tr) document.documentElement.lang = 'tr';
+  $('tag').textContent = query ? T.tag : T.invTag;
+  $('title').textContent = query ? T.title : T.invTitle;
+  $('sub').textContent = query ? T.sub : T.invSub;
+  $('open').textContent = T.open;
+  $('store').textContent = T.store;
+  $('ios').textContent = T.ios;
+  $('hint').textContent = T.hint;
+  $('store').href = play;
+
+  var deep = 'ifk://d' + (query ? '?' + query : '');
+  if (android) {
+    // Chrome / most Android browsers: open the game, or fall back to its Play page (with the challenge as referrer)
+    var intent = 'intent://d' + (query ? '?' + query : '') + '#Intent;scheme=ifk;package=' + PKG + ';S.browser_fallback_url=' + encodeURIComponent(play) + ';end';
+    $('open').href = intent;
+    if (query) setTimeout(function () { location.href = intent; }, 300);
+  } else if (ios) {
+    $('open').href = deep;
+    if (APPSTORE) { $('store').href = APPSTORE; $('store').textContent = tr ? 'APP STORE\'DAN İNDİR' : 'GET IT ON THE APP STORE'; }
+    else { $('store').classList.add('hidden'); $('ios').classList.remove('hidden'); }
+  } else {
+    $('open').classList.add('hidden');
+  }
+})();
+</script>
+</body>
+</html>
